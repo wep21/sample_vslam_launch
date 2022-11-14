@@ -1,0 +1,40 @@
+<launch>
+
+  <arg name="container_executable" default="component_container_mt" />
+
+  <node_container pkg="rclcpp_components" exec="$(var container_executable)" name="vslam_container" namespace="">
+    <composable_node pkg="isaac_ros_visual_slam" plugin="isaac_ros::visual_slam::VisualSlamNode" name="visual_slam_node" namespace="localization">
+      <param name="enable_rectified_pose" value="true" />
+      <param name="denoise_input_images" value="false" />
+      <param name="rectified_images" value="true" />
+      <param name="enable_debug_mode" value="false" />
+      <param name="debug_dump_path" value="/tmp/elbrus" />
+      <param name="enable_slam_visualization" value="true" />
+      <param name="enable_landmarks_view" value="true" />
+      <param name="enable_observations_view" value="true" />
+      <param name="map_frame" value="map" />
+      <param name="odom_frame" value="odom" />
+      <param name="base_frame" value="camera_link" />
+      <param name="input_left_camera_frame" value="camera_left/camera_optical_link" />
+      <param name="input_right_camera_frame" value="camera_right/camera_optical_link" />
+      <remap from="stereo_camera/left/image" to="/sensing/camera/left/image_raw" />
+      <remap from="stereo_camera/left/camera_info" to="/sensing/camera/left/camera_info" />
+      <remap from="stereo_camera/right/image" to="/sensing/camera/right/image_raw" />
+      <remap from="stereo_camera/right/camera_info" to="/sensing/camera/right/camera_info" />
+    </composable_node>
+  </node_container>
+
+  <group>
+    <push-ros-namespace namespace="sensing/camera" />
+    <include file="$(find-pkg-share sample_camera_description)/launch/camera.launch.xml">
+      <arg name="camera_type" value="left" />
+      <arg name="container" value="vslam_container" />
+    </include>
+
+    <include file="$(find-pkg-share sample_camera_description)/launch/camera.launch.xml">
+      <arg name="camera_type" value="right" />
+      <arg name="container" value="vslam_container" />
+    </include>
+  </group>
+
+</launch>

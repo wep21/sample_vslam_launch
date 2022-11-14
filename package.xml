@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>sample_vslam_launch</name>
+  <version>0.1.0</version>
+  <description>The sample_vslam_launch package</description>
+
+  <maintainer email="border_goldenmarket@yahoo.co.jp">Daisuke Nishimatsu</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+
+  <exec_depend>gscam</exec_depend>
+  <exec_depend>isaac_ros_visual_slam</exec_depend>
+  <exec_depend>sample_camera_description</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
